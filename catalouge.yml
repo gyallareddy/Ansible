@@ -50,7 +50,7 @@
 
     - name: copy file 
       ansible.builtin.copy:
-        src: Ansible/Robshop/catalouge.service
+        src: /root/Ansible/catalouge.service
         dest: /etc/systemd/system/catalogue.service 
 
     - name: service start
