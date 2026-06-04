@@ -10,7 +10,8 @@
     - name: installing nodejs 
       ansible.builtin.package:
         name: nodejs
-        state: latest 
+        state: present
+
 #useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
     - name: adding user 
       ansible.builtin.user:
