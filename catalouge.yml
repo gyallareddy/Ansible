@@ -37,7 +37,13 @@
     - name: unziping file 
       ansible.builtin.unarchive:
         src: /tmp/catalogue.zip
-        dest: /app 
+        dest: /app
+        remote_src: yes
+
+
+    - name: changing directory
+      ansible.builtin.command: cd /app 
+    
     
     - name: run command 
       ansible.builtin.command: npm install
