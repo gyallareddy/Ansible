@@ -41,12 +41,12 @@
         remote_src: yes
 
 
-    - name: changing directory
-      ansible.builtin.command: cd /app 
-    
-    
-    - name: run command 
+    - name: install npm dependencies
       ansible.builtin.command: npm install
+      args:
+        chdir: /app
+    
+  
 
     - name: copy file 
       ansible.builtin.copy:
