@@ -1,0 +1,12 @@
+- name: sample
+  hosts: localhost
+  tasks:
+    - name: abc 
+      ansible.builtin.shell: |
+        ls -ltr
+        pwd
+      register: output
+    
+    - name: output display
+      ansible.builtin.debug:
+        msg: "{{ output }}"

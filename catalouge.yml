@@ -1,0 +1,69 @@
+- name: configuring catalouge application
+  hosts: localhost
+  tasks:
+    - name: disabling default module 
+      community.general.dnf_config_manager:
+        - name: nodejs
+          state: disabled 
+        
+    - name: enableing nodejs module 
+      community.general.dnf_config_manager:
+        - name: nodejs:20
+          state: enabled 
+    
+    - name: installing nodejs 
+      ansible.builtin.package:
+        name: nodejs
+        state: latest 
+#useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+    - name: adding user 
+      ansible.builtin.user:
+        name: roboshop
+        home: /app
+        shell: /sbin/nologin
+        comment: roboshop system user 
+        state: present
+
+    - name: directory creation
+      ansible.builtin.file:
+        path: /app
+        state: directory
+    
+    - name: changing directory
+      ansible.builtin.command: cd /app 
+
+    - name: downloading and unziping files 
+      ansible.builtin.command: curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+    
+    - name: unziping file 
+      ansible.builtin.unarchive:
+        src: /tmp/catalogue.zip
+        dest: /app 
+    
+    - name: run command 
+      ansible.builtin.command: npm install
+
+    - name: copy file 
+      ansible.builtin.copy:
+        src: /Users/yallareddy/Desktop/softwares/Myscripts/Ansible/Robshop/catalouge.service
+        dest: /etc/systemd/system/catalogue.service 
+
+    - name: service start
+      ansible.builtin.service:
+        name: catalogue.service
+        state: started
+        enabled: yes 
+    
+    - name: command
+      ansible.builtin.command: systemctl daemon-reload
+
+    - name: copy mongo repo 
+      ansible.builtin.copy:
+        src: mongo.repo
+        dest: /etc/yum.repos.d/mongo.repo
+
+    - name: installing 
+      ansible.builtin.package:
+        - name: mongodb-mongosh
+          state: present
+
