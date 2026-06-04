@@ -1,0 +1,17 @@
+- name: mqsql "installing 
+  hosts: localhost
+  become: yes 
+  tasks: 
+    - name: installing package
+      ansible.builtin.package:
+        name: mysql
+        state: latest 
+    
+    - name: restaring the service 
+      ansible.builtin.service:
+        name: mysqld
+        enabled: True
+        state: started
+    
+    - name: setting root password
+      ansible.builtin.command: mysql_secure_installation --set-root-pass RoboShop@1
