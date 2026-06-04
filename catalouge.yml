@@ -61,8 +61,8 @@
 
     - name: installing 
       ansible.builtin.package:
-        - name: mongodb-mongosh
-          state: present
+        name: mongodb-mongosh
+        state: present
 
 #==========
 
