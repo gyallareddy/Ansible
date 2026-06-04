@@ -2,14 +2,10 @@
   hosts: localhost
   tasks:
     - name: disabling default module 
-      community.general.dnf_config_manager:
-        - name: nodejs
-          state: disabled 
+      ansible.builtin.command: dnf module disable nodejs -y
         
     - name: enableing nodejs module 
-      community.general.dnf_config_manager:
-        - name: nodejs:20
-          state: enabled 
+      ansible.builtin.command: dnf module enable nodejs:20 -y
     
     - name: installing nodejs 
       ansible.builtin.package:
@@ -45,7 +41,7 @@
 
     - name: copy file 
       ansible.builtin.copy:
-        src: /Users/yallareddy/Desktop/softwares/Myscripts/Ansible/Robshop/catalouge.service
+        src: Ansible/Robshop/catalouge.service
         dest: /etc/systemd/system/catalogue.service 
 
     - name: service start
@@ -67,3 +63,69 @@
         - name: mongodb-mongosh
           state: present
 
+#==========
+
+# - name: Configure Catalogue
+#   hosts: localhost
+#   become: yes
+
+#   vars:
+#     mongodb_host: 172.31.0.10
+
+#   tasks:
+
+#     - name: Disable nodejs module
+#       command: dnf module disable nodejs -y
+
+#     - name: Enable nodejs 20 module
+#       command: dnf module enable nodejs:20 -y
+
+#     - name: Install packages
+#       package:
+#         name:
+#           - nodejs
+#           - unzip
+#         state: present
+
+#     - name: Create roboshop user
+#       user:
+#         name: roboshop
+#         system: yes
+#         home: /app
+#         shell: /sbin/nologin
+
+#     - name: Create app directory
+#       file:
+#         path: /app
+#         state: directory
+
+#     - name: Download artifact
+#       get_url:
+#         url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
+#         dest: /tmp/catalogue.zip
+
+#     - name: Extract artifact
+#       unarchive:
+#         src: /tmp/catalogue.zip
+#         dest: /app
+#         remote_src: yes
+
+#     - name: Install npm dependencies
+#       command: npm install
+#       args:
+#         chdir: /app
+
+#     - name: Copy service file
+#       copy:
+#         src: catalogue.service
+#         dest: /etc/systemd/system/catalogue.service
+
+#     - name: Reload systemd
+#       systemd:
+#         daemon_reload: yes
+
+#     - name: Start service
+#       systemd:
+#         name: catalogue
+#         enabled: yes
+#         state: started
