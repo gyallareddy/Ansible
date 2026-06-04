@@ -3,9 +3,11 @@
   tasks:
     - name: disabling default module 
       ansible.builtin.command: dnf module disable nodejs -y
+      ignore_errors: yes
         
     - name: enableing nodejs module 
       ansible.builtin.command: dnf module enable nodejs:20 -y
+      ignore_errors: yes
     
     - name: Install nodejs 
       ansible.builtin.package:
